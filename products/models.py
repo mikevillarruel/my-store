@@ -2,6 +2,10 @@ from django.db import models
 
 
 # Create your models here.
+class Image(models.Model):
+    path = models.ImageField(upload_to='images/')
+
+
 class Product(models.Model):
     name = models.CharField(max_length=64)
     description = models.TextField()
@@ -15,15 +19,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
-
-
-class Image(models.Model):
-    path = models.ImageField(upload_to='images/')
-
-
-class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
+    images = models.ManyToManyField(Image)
 
 
 class Order(models.Model):

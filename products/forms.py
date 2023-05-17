@@ -7,7 +7,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
-        exclude = ['created_at', 'modified_at', 'deleted_at']
+        exclude = ['created_at', 'modified_at', 'deleted_at', 'images']
 
     path = forms.ImageField(widget=forms.ClearableFileInput(attrs={
         "multiple": True
