@@ -15,7 +15,11 @@
             {% for fm in form %}
                 <div class="form-group">
                     <label class="my-2 fw-semibold">
-                        {{ fm.label }}:
+                        {{ fm.label }}
+                        {% if fm.field.required %}
+                            <span class="text-danger">*</span>
+                        {% endif %}
+
                     </label>
                     <div>
                         {% if fm.errors %}
