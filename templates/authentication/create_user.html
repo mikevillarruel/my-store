@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>My Store | Create User</title>
+{% endblock %}
+
+{% block content %}
+    <div class="col-10 col-sm-8 col-md-6 col-xl-4 mx-auto mb-5 mt-4">
+        <div class="d-flex justify-content-center">
+            <h1 class="mb-4">
+                Sign Up
+            </h1>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {% for fm in form %}
+                <label class="my-2 fw-semibold">
+                    {{ fm.label }}
+                    {% if fm.field.required %}
+                        <span class="text-danger">*</span>
+                    {% endif %}
+                </label>
+                <div>
+                    {% if fm.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ fm.errors }}
+                        </div>
+                    {% endif %}
+                    {{ fm }}
+                </div>
+            {% endfor %}
+            <div class="form-group mt-4 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
