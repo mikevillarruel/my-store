@@ -6,18 +6,18 @@ from .models import User
 
 
 # Create your views here.
-def create_user(request):
+def sign_up(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
             User.objects.create_user(**form.cleaned_data)
-            return redirect('create_user')
+            return redirect('login')
         else:
-            return render(request, 'authentication/create_user.html', {
+            return render(request, 'authentication/sign_up.html', {
                 'form': form,
             })
     else:
-        return render(request, 'authentication/create_user.html', {
+        return render(request, 'authentication/sign_up.html', {
             'form': UserForm()
         })
 
