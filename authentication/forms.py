@@ -16,3 +16,18 @@ class UserForm(forms.ModelForm):
         widgets = {
             'password': forms.PasswordInput
         }
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        max_length=150,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+        })
+    )
+    password = forms.CharField(
+        max_length=128,
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+        })
+    )
