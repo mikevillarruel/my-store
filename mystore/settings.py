@@ -124,3 +124,7 @@ MEDIA_URL = 'media/'
 AUTH_USER_MODEL = 'authentication.User'
 
 LOGIN_URL = 'login'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
