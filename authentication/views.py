@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate, login as _login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from .forms import UserForm, LoginForm
+from .forms import UserForm, LoginForm, UserUpdateForm
 from .models import User
 
 
@@ -38,4 +39,21 @@ def login(request):
     else:
         return render(request, 'authentication/login.html', {
             'form': LoginForm(),
+        })
+
+
+@login_required
+def account(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('account')
+        else:
+            return render(request, 'authentication/account.html', {
+                'form': form
+            })
+    else:
+        return render(request, 'authentication/account.html', {
+            'form': UserUpdateForm(instance=request.user),
         })

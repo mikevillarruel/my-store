@@ -18,3 +18,4 @@ class User(AbstractUser):
         max_length=128,
         validators=[password_validator],
     )
+    picture = models.ImageField(upload_to='profile_images/', default='profile_images/default.png')
