@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login as _login
+from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
@@ -57,3 +57,8 @@ def account(request):
         return render(request, 'authentication/account.html', {
             'form': UserUpdateForm(instance=request.user),
         })
+
+
+def logout(request):
+    _logout(request)
+    return redirect('login')
