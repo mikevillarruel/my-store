@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% load static %}
-
 {% block content %}
     <div class="col-10 col-sm-8 col-md-6 col-xl-4 mx-auto mb-5 mt-4">
         <div class="d-flex justify-content-center">
@@ -10,7 +8,13 @@
             </h1>
         </div>
         <div class="rounded-circle overflow-hidden mx-auto"
-             style="background-image: url('{{ form.instance.picture.url }}');background-position: center; background-size: cover; width: 150px; height: 150px;">
+             style=" background-image: url('{{ form.instance.picture.url }}');
+                     background-position: center;
+                     background-size: cover;
+                     width: 150px;
+                     height: 150px;
+                     "
+        >
         </div>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
