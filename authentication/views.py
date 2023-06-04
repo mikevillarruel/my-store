@@ -30,13 +30,15 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             _login(request, user)
-            return redirect('create_product')
+            return redirect('home')
         else:
             return render(request, 'authentication/login.html', {
                 'form': LoginForm(),
                 'error_message': 'Invalid username or password.',
             })
     else:
+        if request.user.is_authenticated:
+            return redirect('home')
         return render(request, 'authentication/login.html', {
             'form': LoginForm(),
         })

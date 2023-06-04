@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row mx-5 my-5">
+        {% for product in products %}
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <div class="card">
+                    <div class="card-img-top"
+                         style=" background-image: url('{{ product.images.first.path.url }}');
+                                 height: 200px;
+                                 background-size: cover;
+                                 background-position: center;
+                                 "
+                    >
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="w-100 mb-2 d-flex justify-content-center">
+                            <button type="button" class="btn btn-sm btn-outline-light active">
+                                @{{ product.user.username }}
+                            </button>
+                        </div>
+                        <h6 class="card-title text-truncate">{{ product.name }}</h6>
+                        <p class="card-text">${{ product.price }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

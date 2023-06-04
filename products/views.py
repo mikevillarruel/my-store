@@ -27,3 +27,10 @@ def create_product(request):
         return render(request, 'products/create_product.html', {
             'form': ProductForm()
         })
+
+
+def home(request):
+    products = Product.objects.all()
+    return render(request, 'products/home.html', {
+        'products': products,
+    })
