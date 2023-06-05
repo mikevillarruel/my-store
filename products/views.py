@@ -18,7 +18,7 @@ def create_product(request):
             for image in images:
                 product.images.create(path=image)
 
-            return redirect('create_product')
+            return redirect('my_products')
         else:
             return render(request, 'products/create_product.html', {
                 'form': form,
@@ -34,3 +34,18 @@ def home(request):
     return render(request, 'products/home.html', {
         'products': products,
     })
+
+
+@login_required
+def my_products(request):
+    products = Product.objects.filter(user=request.user)
+    return render(request, 'products/my_products.html', {
+        'products': products,
+    })
+
+
+@login_required
+def delete_product(request, id):
+    product = Product.objects.get(id=id)
+    product.delete()
+    return redirect('my_products')

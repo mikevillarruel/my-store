@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="m-4">
+        <a class="btn btn-outline-primary mb-3" href="{% url 'create_product' %}">
+            Add product
+        </a>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-primary">
+                <tr>
+                    <th>#</th>
+                    <th class="text-center">Product</th>
+                    <th>Name</th>
+                    <th class="d-none d-sm-table-cell">Description</th>
+                    <th class="d-none d-md-table-cell">Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>
+                            <img src="{{ product.images.first.path.url }}" alt="" height="150px"/>
+                        </td>
+                        <td>{{ product.name }}</td>
+                        <td class="d-none d-sm-table-cell">{{ product.description }}</td>
+                        <td class="d-none d-md-table-cell">${{ product.price }}</td>
+                        <td>
+                            <a class="btn btn-outline-primary col-12 col-md-auto mb-2"
+                               href=""
+                            >
+                                Edit
+                            </a>
+                            <a class="btn btn-outline-danger col-12 col-md-auto mb-2"
+                               href="{% url 'delete_product' id=product.id %}"
+                            >
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
