@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.utils import timezone
 
 from .forms import ProductForm
 from .models import Product
@@ -38,7 +39,7 @@ def home(request):
 
 @login_required
 def my_products(request):
-    products = Product.objects.filter(user=request.user)
+    products = Product.objects.filter(user=request.user, deleted_at__isnull=True)
     return render(request, 'products/my_products.html', {
         'products': products,
     })
@@ -47,5 +48,6 @@ def my_products(request):
 @login_required
 def delete_product(request, id):
     product = Product.objects.get(id=id)
-    product.delete()
+    product.deleted_at = timezone.now()
+    product.save()
     return redirect('my_products')
