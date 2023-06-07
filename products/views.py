@@ -31,7 +31,7 @@ def create_product(request):
 
 
 def home(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(deleted_at__isnull=True)
     return render(request, 'products/home.html', {
         'products': products,
     })
