@@ -14,7 +14,7 @@ class Product(models.Model):
     description = models.TextField()
     size = models.CharField(max_length=16)
     brand = models.CharField(max_length=64, null=True, blank=True)
-    material = models.CharField(max_length=64, null=True, blank=True)
+    composition = models.CharField(max_length=256, null=True, blank=True)
     stock = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.IntegerField(null=True, blank=True)

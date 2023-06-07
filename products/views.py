@@ -51,3 +51,12 @@ def delete_product(request, id):
     product.deleted_at = timezone.now()
     product.save()
     return redirect('my_products')
+
+
+def product_detail(request, id):
+    product = Product.objects.get(id=id)
+    price_with_discount = product.price - (product.price * product.discount / 100) if product.discount else None
+    return render(request, 'products/product_detail.html', {
+        'product': product,
+        'price_with_discount': price_with_discount,
+    })
