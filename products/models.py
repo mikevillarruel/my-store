@@ -1,13 +1,12 @@
+import os
+
+from django.conf import settings
 from django.db import models
 
 from authentication.models import User
 
 
 # Create your models here.
-class Image(models.Model):
-    path = models.ImageField(upload_to='images/')
-
-
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
@@ -21,4 +20,16 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
-    images = models.ManyToManyField(Image)
+
+
+class Image(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    path = models.ImageField(upload_to='images/')
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        image_path = os.path.join(settings.MEDIA_ROOT, self.path.name)
+        try:
+            os.remove(image_path)
+        except FileNotFoundError:
+            pass

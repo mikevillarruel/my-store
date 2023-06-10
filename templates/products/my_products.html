@@ -29,7 +29,7 @@
                         <td class="d-none d-md-table-cell">${{ product.price }}</td>
                         <td>
                             <a class="btn btn-outline-primary col-12 col-md-auto mb-2"
-                               href=""
+                               href="{% url 'edit_product' id=product.id %}"
                             >
                                 Edit
                             </a>

@@ -1,0 +1,19 @@
+{% for fm in form %}
+    <div class="mb-3">
+        <label class="form-label fw-semibold">
+            {{ fm.label }}
+            {% if fm.field.required %}
+                <span class="text-danger">*</span>
+            {% endif %}
+
+        </label>
+        <div>
+            {% if fm.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ fm.errors }}
+                </div>
+            {% endif %}
+            {{ fm }}
+        </div>
+    </div>
+{% endfor %}

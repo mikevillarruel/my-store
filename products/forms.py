@@ -20,6 +20,16 @@ class ProductForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['created_at', 'modified_at', 'deleted_at', 'images', 'user']
 
-    images = forms.ImageField(label='Images', widget=forms.ClearableFileInput(attrs={
-        "multiple": True
+
+class ProductCreationForm(ProductForm):
+    images = forms.ImageField(widget=forms.ClearableFileInput(attrs={
+        'multiple': True,
+    }))
+
+
+class ImagesCreationForm(forms.Form):
+    add_images = forms.ImageField(widget=forms.ClearableFileInput(attrs={
+        'id': 'input',
+        'class': 'form-control',
+        'multiple': True,
     }))

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="col-10 col-sm-8 col-md-6 col-xl-4 mx-auto mb-5 mt-4">
+        <h1 class="mb-4">
+            Edit Product
+        </h1>
+
+        {% if form.instance.images.all %}
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Images</label>
+                <div class="d-flex flex-row overflow-x-auto form-control">
+                    {% for image in form.instance.images.all %}
+                        <form method="GET" action="{% url 'delete_image' id=image.id %}">
+                            <div class="p-3 d-flex flex-column">
+                                <img src="{{ image.path.url }}" alt="{{ image.path.name }}" height="200px">
+                                <button class="btn btn-danger py-0" style="border-radius: 0">
+                                    Delete
+                                </button>
+                            </div>
+                        </form>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              action="{% url 'add_images_to_product' product_id=form.instance.id %}">
+            {% csrf_token %}
+
+            {% include 'form.html' with form=images_creation_form only %}
+
+            <div id="output">
+            </div>
+
+            <div class="mt-4 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary col-2">Upload</button>
+            </div>
+        </form>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% include 'form.html' with form=form only %}
+
+            <div class="mt-4 d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary col-2">Save</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/displayImages.js' %}"></script>
+{% endblock %}
