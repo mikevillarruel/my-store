@@ -86,11 +86,20 @@ def edit_product(request, id):
 
 
 @login_required
-def delete_image(request, id):
-    image = Image.objects.get(id=id)
-    product_id = image.product.id
-    image.delete()
-    return redirect('edit_product', id=product_id)
+def delete_images(request):
+    if request.method == 'POST':
+        images = request.POST.getlist('images')
+
+        if not images:
+            return redirect(request.META.get('HTTP_REFERER'))  # Redirect to the previous page
+
+        product_id = Image.objects.get(id=images[0]).product.id
+
+        for image_id in images:
+            image = Image.objects.get(id=image_id)
+            image.delete()
+
+        return redirect('edit_product', id=product_id)
 
 
 @login_required

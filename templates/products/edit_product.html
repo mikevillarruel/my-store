@@ -10,21 +10,35 @@
         </h1>
 
         {% if form.instance.images.all %}
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Images</label>
-                <div class="d-flex flex-row overflow-x-auto form-control">
-                    {% for image in form.instance.images.all %}
-                        <form method="GET" action="{% url 'delete_image' id=image.id %}">
-                            <div class="p-3 d-flex flex-column">
-                                <img src="{{ image.path.url }}" alt="{{ image.path.name }}" height="200px">
-                                <button class="btn btn-danger py-0" style="border-radius: 0">
-                                    Delete
-                                </button>
+            <form method="POST" action="{% url 'delete_images' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Delete images</label>
+                    <div class="form-control d-flex flex-row overflow-x-auto p-3">
+                        {% for image in form.instance.images.all %}
+                            <div class="form-check-inline">
+                                <div class="position-relative d-flex">
+                                    <img src="{{ image.path.url }}" alt="{{ image.path.name }}"
+                                         height="200px">
+                                    <div class="position-absolute end-0 top-0 p-1">
+                                        <label class="d-flex">
+                                            <input class="form-check-input m-0"
+                                                   style="width: 20px; height: 20px;"
+                                                   type="checkbox"
+                                                   name="images"
+                                                   value="{{ image.id }}"
+                                                   id="check-{{ image.id }}">
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="mt-4 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-danger col-2">Delete</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         {% endif %}
 
         <form method="POST"
