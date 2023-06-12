@@ -14,34 +14,33 @@ def sign_up(request):
             User.objects.create_user(**form.cleaned_data)
             return redirect('login')
         else:
-            return render(request, 'authentication/sign_up.html', {
-                'form': form,
-            })
+            context = {'form': form}
     else:
-        return render(request, 'authentication/sign_up.html', {
-            'form': UserForm()
-        })
+        context = {'form': UserForm()}
+
+    return render(request, 'authentication/sign_up.html', context)
 
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if user:
             _login(request, user)
             return redirect('home')
         else:
-            return render(request, 'authentication/login.html', {
+            context = {
                 'form': LoginForm(),
                 'error_message': 'Invalid username or password.',
-            })
+            }
     else:
-        if request.user.is_authenticated:
-            return redirect('home')
-        return render(request, 'authentication/login.html', {
-            'form': LoginForm(),
-        })
+        context = {'form': LoginForm()}
+
+    return render(request, 'authentication/login.html', context)
 
 
 @login_required
@@ -52,13 +51,11 @@ def account(request):
             form.save()
             return redirect('account')
         else:
-            return render(request, 'authentication/account.html', {
-                'form': form
-            })
+            context = {'form': form}
     else:
-        return render(request, 'authentication/account.html', {
-            'form': UserUpdateForm(instance=request.user),
-        })
+        context = {'form': UserUpdateForm(instance=request.user)}
+
+    return render(request, 'authentication/account.html', context)
 
 
 def logout(request):

@@ -21,13 +21,11 @@ def create_product(request):
 
             return redirect('my_products')
         else:
-            return render(request, 'products/create_product.html', {
-                'form': form,
-            })
+            context = {'form': form}
     else:
-        return render(request, 'products/create_product.html', {
-            'form': ProductCreationForm()
-        })
+        context = {'form': ProductCreationForm()}
+
+    return render(request, 'products/create_product.html', context)
 
 
 def home(request):
@@ -74,15 +72,19 @@ def edit_product(request, id):
             for image in images:
                 product.images.create(path=image)
 
+            context = {
+                'form': ProductForm(instance=product),
+                'images_creation_form': ImagesCreationForm(),
+            }
         else:
-            return render(request, 'products/edit_product.html', {
-                'form': form,
-            })
+            context = {'form': form}
+    else:
+        context = {
+            'form': ProductForm(instance=product),
+            'images_creation_form': ImagesCreationForm(),
+        }
 
-    return render(request, 'products/edit_product.html', {
-        'form': ProductForm(instance=product),
-        'images_creation_form': ImagesCreationForm(),
-    })
+    return render(request, 'products/edit_product.html', context)
 
 
 @login_required
