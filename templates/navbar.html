@@ -30,6 +30,18 @@
                         <a class="nav-link" href="{% url 'login' %}">Sign in</a>
                     </li>
                 {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link d-flex position-relative" href="">
+                        <img src="{% static 'cart.svg' %}" alt="cart">
+                        {% if request.session.items_count %}
+                            <div class="rounded-circle bg-black text-white text-center fw-semibold position-absolute end-0 bottom-0"
+                                 style="min-width: 18px; height: 18px; font-size: 14px; line-height: 18px;"
+                            >
+                                {{ request.session.items_count }}
+                            </div>
+                        {% endif %}
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
