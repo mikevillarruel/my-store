@@ -23,6 +23,7 @@ class ProductForm(forms.ModelForm):
 
 class ProductCreationForm(ProductForm):
     images = forms.ImageField(widget=forms.ClearableFileInput(attrs={
+        'id': 'input',
         'multiple': True,
     }))
 
