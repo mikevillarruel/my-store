@@ -51,17 +51,6 @@
             {% if product.stock > 0 %}
                 <form class="my-5" method="POST" action="{% url 'add_to_cart' %}">
                     {% csrf_token %}
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div {% if message.tags == 'error' %}
-                                class="alert alert-danger"
-                                role="alert"
-                            {% endif %}
-                            >
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
                     <div class="d-flex align-items-center">
                         <input type="hidden" name="product_id" value="{{ product.id }}">
                         <label for="quantity" class="fw-bold me-2">Quantity:</label>

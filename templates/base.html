@@ -24,6 +24,28 @@
     {% include 'navbar.html' %}
 {% endblock %}
 
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert mb-0
+                {% if message.tags == 'debug' %}
+                     alert-secondary
+                {% elif message.tags == 'info' %}
+                   alert-info
+                {% elif message.tags == 'success' %}
+                   alert-success
+                {% elif message.tags == 'warning' %}
+                   alert-warning
+                {% elif message.tags == 'error' %}
+                   alert-danger
+                {% endif %}
+                "
+             role="alert"
+        >
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 {% block content %}
 {% endblock %}
 
