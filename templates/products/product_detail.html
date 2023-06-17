@@ -1,16 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="d-flex flex-wrap p-5 p-md-4">
+    <div class="d-flex flex-wrap p-0 p-md-4">
         <div id="carouselFade"
-             class="carousel slide carousel-fade col-12 col-md-6 d-flex align-items-center"
+             class="carousel slide carousel-fade col-12 col-md-6 my-4 my-md-0"
              data-bs-theme="dark"
+             style="max-height: 85vh; min-height: 50vh;"
         >
-            <div class="carousel-inner d-flex align-items-center ">
+            <div class="carousel-inner h-100">
                 {% for image in product.images.all %}
-                    <div class="carousel-item d-flex justify-content-center {% if product.images.first == image %} active {% endif %}">
-                        <img src="{{ image.path.url }}" class="d-block" alt="{{ product.name }}"
-                             style="max-height: 75vh; max-width: 75%">
+                    <div class="carousel-item h-100 d-flex justify-content-center align-items-center
+                                {% if product.images.first == image %} active {% endif %}">
+                        <div class="w-75 h-100"
+                             style=" background-image: url('{{ image.path.url }}');
+                                     background-size: contain;
+                                     background-position: center;
+                                     background-repeat: no-repeat;
+                                     "
+                        >
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -28,18 +36,18 @@
                 </button>
             {% endif %}
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 px-4 px-md-0">
             <h1>{{ product.name }}</h1>
             <p>From the curated closet of @{{ product.user.username }}</p>
 
-            {% if price_with_discount %}
+            {% if product.discount %}
                 <div class="d-flex justify-content-center align-items-start flex-column">
                     <p class="border bg-danger text-light p-2">
                         {{ product.discount }}% off
                     </p>
                     <h4>
                         <del>${{ product.price }}</del>
-                        ${{ price_with_discount }}
+                        ${{ product.net_price }}
                     </h4>
                 </div>
             {% else %}
