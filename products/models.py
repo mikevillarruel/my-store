@@ -21,6 +21,16 @@ class Product(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
+    @property
+    def net_price(self):
+        """
+        Returns the net price of the product (price - discount).
+        """
+        if self.discount:
+            return round(self.price - (self.price * self.discount / 100), 2)
+        else:
+            return self.price
+
 
 class Image(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')

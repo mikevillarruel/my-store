@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if items %}
+        <div class="table-responsive m-5 p-0 p-sm-5">
+            <table class="table align-middle text-center">
+                <thead>
+                <tr>
+                    <th colspan="2">
+                        <h1 class="text-dark fw-normal m-0 text-start">
+                            Your Cart
+                        </h1>
+                    </th>
+                    <th class="text-secondary fw-normal d-none d-md-table-cell">Price</th>
+                    <th class="text-secondary fw-normal d-none d-sm-table-cell">Quantity</th>
+                    <th class="text-secondary fw-normal">Subtotal</th>
+                    <th style="width: 50px">
+                        <a href="{% url 'clear_cart' %}" class="text-secondary fw-normal">
+                            Clear All
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td style="width: 170px;">
+                            <a href="{% url 'product_detail' id=item.product.id %}">
+                                <img src="{{ item.product.images.first.path.url }}" alt="" height="80px"/>
+                            </a>
+                        </td>
+                        <td class="text-start">
+                            <a href="{% url 'product_detail' id=item.product.id %}"
+                               class="text-decoration-none text-dark">
+                                {{ item.product.name }}
+                            </a>
+                        </td>
+                        <td class="d-none d-md-table-cell">
+                            {% if item.product.discount %}
+                                <div class="text-decoration-line-through text-secondary">
+                                    ${{ item.product.price }}
+                                </div>
+                                <div class="text-danger fw-bold">
+                                    ${{ item.product.net_price }}
+                                </div>
+                            {% else %}
+                                ${{ item.product.price }}
+                            {% endif %}
+                        </td>
+                        <td class="d-none d-sm-table-cell">
+                            {{ item.quantity }}
+                        </td>
+                        <td {% if item.product.discount %} class="text-danger fw-bold" {% endif %}>
+                            ${{ item.subtotal }}
+                        </td>
+                        <td>
+                            <a href="{% url 'delete_item_from_cart' product_id=item.product.id %}" class="text-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="d-flex flex-row justify-content-end pt-5">
+                <div class="d-flex flex-column me-2">
+                    <p class="fw-bold pb-5 mb-0">
+                        Subtotal
+                    </p>
+                    <a href="{% url 'home' %}" class="btn btn-dark">
+                        Continue Shopping
+                    </a>
+                </div>
+                <div class="d-flex flex-column align-items-end">
+                    <p class="fw-bold pb-5 mb-0">
+                        ${{ subtotal }}
+                    </p>
+                    <a href="" class="btn btn-warning">
+                        Checkout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="d-flex justify-content-center align-items-center flex-column" style="height: 62vh;">
+            <h4>
+                YOUR CART IS EMPTY
+            </h4>
+            <a href="{% url 'home' %}" class="text-secondary">
+                Click here to start shopping.
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

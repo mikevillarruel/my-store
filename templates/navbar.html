@@ -31,7 +31,7 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link d-flex position-relative" href="">
+                    <a class="nav-link d-flex position-relative" href="{% url 'cart_detail' %}">
                         <img src="{% static 'cart.svg' %}" alt="cart">
                         {% if request.session.items_count %}
                             <div class="rounded-circle bg-black text-white text-center fw-semibold position-absolute end-0 bottom-0"
