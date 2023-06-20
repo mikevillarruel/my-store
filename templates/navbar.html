@@ -31,15 +31,23 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link d-flex position-relative" href="{% url 'cart_detail' %}">
-                        <img src="{% static 'cart.svg' %}" alt="cart">
-                        {% if request.session.items_count %}
-                            <div class="rounded-circle bg-black text-white text-center fw-semibold position-absolute end-0 bottom-0"
-                                 style="min-width: 18px; height: 18px; font-size: 14px; line-height: 18px;"
-                            >
-                                {{ request.session.items_count }}
-                            </div>
-                        {% endif %}
+                    <a class="nav-link py-0" href="{% url 'cart_detail' %}">
+                        <div class="position-relative d-flex justify-content-start py-2"
+                                {% if request.session.items_count %} style="width: 32px;" {% endif %}
+                        >
+                            <img src="{% static 'cart.svg' %}" alt="cart" width="26">
+                            {% if request.session.items_count %}
+                                <div class="rounded-circle bg-black text-white text-center fw-semibold position-absolute end-0 bottom-0"
+                                     style="min-width: 18px; height: 18px; font-size: 14px; line-height: 18px; padding: 0 1px;"
+                                >
+                                    {% if request.session.items_count < 10 %}
+                                        {{ request.session.items_count }}
+                                    {% else %}
+                                        +9
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
                     </a>
                 </li>
             </ul>
