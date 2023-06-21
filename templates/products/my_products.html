@@ -25,9 +25,15 @@
                     <tr>
                         <td>{{ product.id }}</td>
                         <td>
-                            <img src="{{ product.images.first.path.url }}" alt="" height="150px"/>
+                            <a href="{% url 'product_detail' id=product.id %}">
+                                <img src="{{ product.images.first.path.url }}" alt="" height="150px"/>
+                            </a>
                         </td>
-                        <td>{{ product.name }}</td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href="{% url 'product_detail' id=product.id %}">
+                                {{ product.name }}
+                            </a>
+                        </td>
                         <td class="d-none d-sm-table-cell">{{ product.description }}</td>
                         <td class="d-none d-md-table-cell"> ${{ product.price }}</td>
                         <td>
