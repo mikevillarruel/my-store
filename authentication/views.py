@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login as _login, logout as _logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -12,6 +13,7 @@ def sign_up(request):
         form = UserForm(request.POST)
         if form.is_valid():
             User.objects.create_user(**form.cleaned_data)
+            messages.success(request, 'Your account has been created successfully. Please sign in.')
             return redirect('login')
         else:
             context = {'form': form}
@@ -31,6 +33,7 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user:
             _login(request, user)
+            messages.success(request, f'Welcome {user.username}!')
             return redirect('home')
         else:
             context = {
@@ -49,6 +52,7 @@ def account(request):
         form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Your account has been updated successfully.')
             return redirect('account')
         else:
             context = {'form': form}

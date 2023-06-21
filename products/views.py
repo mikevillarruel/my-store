@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -18,6 +19,8 @@ def create_product(request):
 
             for image in images:
                 product.images.create(path=image)
+
+            messages.success(request, f'{product.name} has been created successfully.')
 
             return redirect('my_products')
         else:
@@ -48,6 +51,7 @@ def delete_product(request, id):
     product = Product.objects.get(id=id)
     product.deleted_at = timezone.now()
     product.save()
+    messages.success(request, f'{product.name} has been deleted successfully.')
     return redirect('my_products')
 
 
@@ -74,6 +78,7 @@ def edit_product(request, id):
                 'form': ProductForm(instance=product),
                 'images_creation_form': ImagesCreationForm(),
             }
+            messages.success(request, f'{product.name} has been updated successfully.')
         else:
             context = {'form': form}
     else:
@@ -93,13 +98,15 @@ def delete_images(request):
         if not images:
             return redirect(request.META.get('HTTP_REFERER'))  # Redirect to the previous page
 
-        product_id = Image.objects.get(id=images[0]).product.id
+        product = Image.objects.get(id=images[0]).product
 
         for image_id in images:
             image = Image.objects.get(id=image_id)
             image.delete()
 
-        return redirect('edit_product', id=product_id)
+        messages.success(request, f'{product.name} has been updated successfully.')
+
+        return redirect('edit_product', id=product.id)
 
 
 @login_required
@@ -112,6 +119,8 @@ def add_images_to_product(request, product_id):
 
             for image in images:
                 product.images.create(path=image)
+
+            messages.success(request, f'{product.name} has been updated successfully.')
 
             return redirect('edit_product', id=product_id)
         else:
