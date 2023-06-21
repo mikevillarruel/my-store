@@ -69,11 +69,6 @@ def edit_product(request, id):
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
-            images = request.FILES.getlist('images')
-
-            for image in images:
-                product.images.create(path=image)
-
             context = {
                 'form': ProductForm(instance=product),
                 'images_creation_form': ImagesCreationForm(),
