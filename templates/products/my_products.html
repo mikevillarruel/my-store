@@ -2,9 +2,12 @@
 
 {% block content %}
     <div class="m-4">
-        <a class="btn btn-outline-primary mb-3" href="{% url 'create_product' %}">
-            Add product
-        </a>
+        <div class="d-flex justify-content-end mb-3">
+            <a class="btn btn-primary" href="{% url 'create_product' %}">
+                <i class="bi-plus-lg"></i>
+                Add product
+            </a>
+        </div>
         <div class="table-responsive">
             <table class="table table-bordered table-hover text-center align-middle">
                 <thead class="table-primary">
@@ -26,17 +29,17 @@
                         </td>
                         <td>{{ product.name }}</td>
                         <td class="d-none d-sm-table-cell">{{ product.description }}</td>
-                        <td class="d-none d-md-table-cell">${{ product.price }}</td>
+                        <td class="d-none d-md-table-cell"> ${{ product.price }}</td>
                         <td>
-                            <a class="btn btn-outline-primary col-12 col-md-auto mb-2"
+                            <a class="btn btn-primary mb-2"
                                href="{% url 'edit_product' id=product.id %}"
                             >
-                                Edit
+                                <i class="bi bi-pencil-fill"></i>
                             </a>
-                            <a class="btn btn-outline-danger col-12 col-md-auto mb-2"
+                            <a class="btn btn-danger"
                                href="{% url 'delete_product' id=product.id %}"
                             >
-                                Delete
+                                <i class="bi-trash3-fill"></i>
                             </a>
                         </td>
                     </tr>

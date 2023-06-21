@@ -35,7 +35,10 @@
                         {% endfor %}
                     </div>
                     <div class="mt-4 d-flex justify-content-center">
-                        <button type="submit" class="btn btn-danger col-2">Delete</button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi-trash3-fill"></i>
+                            Delete
+                        </button>
                     </div>
                 </div>
             </form>
@@ -52,7 +55,10 @@
             </div>
 
             <div class="mt-4 d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary col-2">Upload</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi-cloud-arrow-up-fill"></i>
+                    Upload
+                </button>
             </div>
         </form>
 
@@ -62,7 +68,10 @@
             {% include 'form.html' with form=form only %}
 
             <div class="mt-4 d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary col-2">Save</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi-save2-fill"></i>
+                    Save
+                </button>
             </div>
         </form>
     </div>
