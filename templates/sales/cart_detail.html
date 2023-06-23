@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
     {% if items %}
         <div class="table-responsive m-5 p-0 p-sm-5">
@@ -48,7 +50,25 @@
                             {% endif %}
                         </td>
                         <td class="d-none d-sm-table-cell">
-                            {{ item.quantity }}
+                            <form method="POST" action="{% url 'update_item_quantity' %}"
+                                  class="d-flex justify-content-center align-items-center"
+                            >
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                <label class="d-none" for="quantity"></label>
+                                <input class="form-control mx-2 text-center"
+                                       id="quantity"
+                                       name="quantity"
+                                       type="number"
+                                       value="{{ item.quantity }}"
+                                       max="{{ item.product.stock }}"
+                                       min="1"
+                                       onchange="handleChange(this)"
+                                       onblur="handleBlur(this)"
+                                       autocomplete="off"
+                                       required
+                                >
+                            </form>
                         </td>
                         <td {% if item.product.discount %} class="text-danger fw-bold" {% endif %}>
                             ${{ item.subtotal }}
@@ -96,4 +116,8 @@
             </a>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/debounce.js' %}"></script>
 {% endblock %}

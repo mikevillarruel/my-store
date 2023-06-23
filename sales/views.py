@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 
 from products.models import Product
-from .cart import Cart
+from .cart import Cart, StockException
 
 
 # Create your views here.
@@ -13,17 +13,14 @@ def add_to_cart(request):
         quantity = int(request.POST.get('quantity'))
         product = Product.objects.get(id=product_id)
 
-        if cart.add(product_id, quantity):
+        try:
+            cart.add(product_id, quantity)
             messages.success(
                 request,
                 message=f"{quantity} {'item' if quantity == 1 else 'items'} of {product.name} added to the cart."
             )
-        else:
-            messages.error(
-                request,
-                message=f"You can't add more than {product.stock} items "
-                        f"of this product to the cart because of the stock."
-            )
+        except StockException as e:
+            messages.error(request, message=e.message)
 
         return redirect('product_detail', id=product_id)
 
@@ -57,3 +54,17 @@ def delete_item_from_cart(request, product_id):
     cart = Cart(request)
     cart.delete_item_by_product_id(product_id)
     return redirect('cart_detail')
+
+
+def update_item_quantity(request):
+    if request.method == 'POST':
+        cart = Cart(request)
+        quantity = int(request.POST.get('quantity'))
+        product_id = int(request.POST.get('product_id'))
+        try:
+            cart.update_item_quantity(product_id, quantity)
+            messages.success(request, message='Quantity updated successfully.')
+        except StockException as e:
+            messages.error(request, message=e.message)
+
+        return redirect('cart_detail')

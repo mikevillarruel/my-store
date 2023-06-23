@@ -5,6 +5,12 @@ from django.http import HttpRequest
 from products.models import Product
 
 
+class StockException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 class CartItem:
     def __init__(self, product_id: int, quantity: int):
         self.product_id = product_id
@@ -32,21 +38,23 @@ class Cart:
                 quantity = int(item['quantity'])
                 self.add(id_product, quantity)
 
-    def add(self, product_id: int, quantity: int) -> bool:
+    def add(self, product_id: int, quantity: int):
         product = Product.objects.get(id=product_id)
+
         if product.stock < self.get_quantity_by_product_id(product_id) + quantity:
-            return False
+            raise StockException(
+                f"You can't add more than {product.stock} items of this product to the cart because of the stock."
+            )
 
         for item in self.items:
             if item.product_id == product_id:
                 item.quantity += quantity
                 self._add_values_to_session()
-                return True
+                return
 
         item = CartItem(product_id, quantity)
         self.items.append(item)
         self._add_values_to_session()
-        return True
 
     def _add_values_to_session(self):
         self.session[self.ITEMS_SESSION_KEY] = json.dumps(self.items, default=lambda o: o.__dict__)
@@ -86,3 +94,14 @@ class Cart:
             self.clear()
 
         return result
+
+    def update_item_quantity(self, product_id, quantity):
+        product = Product.objects.get(id=product_id)
+        if quantity < 1:
+            raise StockException('Quantity must be greater than 0')
+        if quantity > product.stock:
+            raise StockException(f'Quantity must be less than stock ({product.stock} {product.name} available)')
+        for item in self.items:
+            if item.product_id == product_id:
+                item.quantity = quantity
+                self._add_values_to_session()
