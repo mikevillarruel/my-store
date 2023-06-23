@@ -27,7 +27,7 @@
 
 {% if messages %}
     {% for message in messages %}
-        <div class="alert mb-0
+        <div class="alert mb-0 alert-dismissible fade show
                 {% if message.tags == 'debug' %}
                      alert-secondary
                 {% elif message.tags == 'info' %}
@@ -43,6 +43,7 @@
              role="alert"
         >
             {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endfor %}
 {% endif %}
