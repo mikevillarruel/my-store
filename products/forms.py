@@ -11,7 +11,7 @@ class ProductForm(forms.ModelForm):
             field.widget.attrs['class'] = "form-control"
 
         self.fields['discount'].widget.attrs["max"] = 100
-        self.fields['discount'].widget.attrs["min"] = 0
+        self.fields['discount'].widget.attrs["min"] = 1
 
         self.fields['stock'].widget.attrs["min"] = 1
 
