@@ -1,0 +1,10 @@
+<div>
+    <p style="font-size: 2rem">{{ title }}</p>
+    <div class="d-flex flex-row overflow-x-auto product-list">
+        {% for product in products %}
+            <div class="pe-4">
+                {% include 'products/product_item.html' with product=product only %}
+            </div>
+        {% endfor %}
+    </div>
+</div>

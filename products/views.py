@@ -32,9 +32,14 @@ def create_product(request):
 
 
 def home(request):
-    products = Product.objects.filter(deleted_at__isnull=True)
+    products = Product.objects.filter(deleted_at__isnull=True)[0:20]
+    offers = Product.objects.filter(deleted_at__isnull=True, discount__isnull=False).order_by('-discount')[:10]
+    latest = Product.objects.filter(deleted_at__isnull=True).order_by('-created_at')[:10]
+
     return render(request, 'products/home.html', {
         'products': products,
+        'offers': offers,
+        'latest': latest,
     })
 
 

@@ -1,0 +1,39 @@
+<a class="card border-0 text-decoration-none"
+   href="{% url 'product_detail' id=product.id %}"
+   style="width: 15rem;">
+    <div class="card-img-top position-relative d-flex justify-content-center bg-body-tertiary"
+         style=" background-image: url('{{ product.images.first.path.url }}');
+                 height: 20rem;
+                 background-size: cover;
+                 background-position: center;
+                 "
+    >
+        {% if product.discount %}
+            <div class="position-absolute bottom-0">
+                {% include 'products/discount.html' with discount=product.discount scale=1 only %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="card-body text-center">
+        <div class="w-100 mb-2 d-flex justify-content-center">
+            <button type="button" class="btn btn-sm btn-outline-light active">
+                @{{ product.user.username }}
+            </button>
+        </div>
+        <h6 class="card-title text-truncate">
+            {{ product.name }}
+        </h6>
+        {% if product.discount %}
+            <p class="card-text">
+                ${{ product.net_price }}
+                <span class="text-decoration-line-through card-text">
+                    ${{ product.price }}
+                </span>
+            </p>
+        {% else %}
+            <p class="card-text">
+                ${{ product.net_price }}
+            </p>
+        {% endif %}
+    </div>
+</a>
