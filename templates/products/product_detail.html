@@ -41,13 +41,13 @@
             <p>From the curated closet of @{{ product.user.username }}</p>
 
             {% if product.discount %}
-                <div class="d-flex justify-content-center align-items-start flex-column">
-                    <p class="border bg-danger text-light p-2">
-                        {{ product.discount }}% off
-                    </p>
+                <div class="d-flex justify-content-center align-items-start flex-column" style="width: fit-content">
+                    <div class="pb-3">
+                        {% include 'products/discount.html' with discount=product.discount scale=1 only %}
+                    </div>
                     <h4>
-                        <del>${{ product.price }}</del>
                         ${{ product.net_price }}
+                        <span class="text-decoration-line-through">${{ product.price }}</span>
                     </h4>
                 </div>
             {% else %}
