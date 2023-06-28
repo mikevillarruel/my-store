@@ -161,3 +161,6 @@ cython_debug/
 
 # Media folder
 media/
+
+# Data folder
+data/
