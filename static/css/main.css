@@ -4,7 +4,7 @@
 :root {
     --main-font-family: 'Roboto Slab', serif;
     --navbar-logo-height: 2.1875rem;
-    --body-height: calc(100vh - var(--navbar-logo-height) - 1.625rem);
+    --available-space-height: calc(100vh - var(--navbar-logo-height) - 1.625rem);
 }
 
 body {

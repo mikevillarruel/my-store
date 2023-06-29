@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.postgres.search import SearchVector
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
@@ -128,3 +129,15 @@ def add_images_to_product(request, product_id):
                 'form': ProductForm(instance=product),
                 'images_creation_form': form,
             })
+
+
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        products = Product.objects.annotate(search=SearchVector('name', 'description', 'brand')).filter(search=query)
+        return render(request, 'products/search.html', {
+            'products': products,
+            'query': query,
+        })
+    else:
+        return render(request, 'products/search.html')

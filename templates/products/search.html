@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="p-4">
+        <div class="d-flex flex-column align-items-center {% if not query %} justify-content-center {% endif %}"
+                {% if not query %} style="height: 55vh;" {% endif %}
+        >
+            <h1 style="font-family: 'Elsie Swash Caps', cursive;">
+                Search
+            </h1>
+            <form method="GET" action="{% url 'search' %}" class="d-flex col-12 col-sm-9 col-md-6" role="search">
+                <input class="form-control me-2" type="search" placeholder="What are you looking for?"
+                       aria-label="Search"
+                       name="q" value="{{ query }}" required>
+                <button class="btn btn-outline-success" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+        </div>
+        {% if query %}
+            {% if products %}
+                <div class="d-flex flex-wrap justify-content-center">
+                    {% for product in products %}
+                        <div class="p-2">
+                            {% include 'products/product_item.html' with product=product only %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="d-flex justify-content-center align-items-center" style="height: 42vh">
+                    <h4>NO PRODUCTS FOUND</h4>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
