@@ -133,11 +133,57 @@ def add_images_to_product(request, product_id):
 
 def search(request):
     query = request.GET.get('q')
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    brands = request.GET.getlist('brands')
+    sizes = request.GET.getlist('sizes')
+    with_discount = request.GET.get('with_discount')
+    in_stock = request.GET.get('in_stock')
+    out_of_stock = request.GET.get('out_of_stock')
+
     if query:
         products = Product.objects.annotate(search=SearchVector('name', 'description', 'brand')).filter(search=query)
+        brands_db = products.values_list('brand', flat=True).distinct()
+        sizes_db = products.values_list('size', flat=True).distinct()
+
+        if min_price:
+            ids = [product.id for product in products if product.net_price >= int(min_price)]
+            products = products.filter(id__in=ids)
+        if max_price:
+            ids = [product.id for product in products if product.net_price <= int(max_price)]
+            products = products.filter(id__in=ids)
+        if brands:
+            products = products.filter(brand__in=brands)
+        if sizes:
+            products = products.filter(size__in=sizes)
+        if with_discount:
+            products = products.filter(discount__isnull=False)
+        if not out_of_stock:
+            products = products.filter(stock__gt=0)
+
+        brands_to_send = get_filters(brands_db, brands)
+        sizes_to_send = get_filters(sizes_db, sizes)
+
         return render(request, 'products/search.html', {
             'products': products,
             'query': query,
+            'min_price': min_price,
+            'max_price': max_price,
+            'brands': brands_to_send,
+            'sizes': sizes_to_send,
+            'with_discount': with_discount,
+            'in_stock': in_stock,
+            'out_of_stock': out_of_stock,
         })
     else:
         return render(request, 'products/search.html')
+
+
+def get_filters(filters, checked_filters):
+    result = []
+    for filter in filters:
+        result.append({
+            'name': filter,
+            'checked': True if filter in checked_filters else False,
+        })
+    return result

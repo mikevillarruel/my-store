@@ -1,0 +1,66 @@
+<div>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="filters_panel"
+         aria-labelledby="myOffcanvasLabel">
+        <div class="offcanvas-header">
+            <div class="d-flex justify-content-between align-items-center w-100 pe-2">
+                <h5 class="offcanvas-title">Filters</h5>
+                <a href="{% url 'search' %}?q={{ query }}" class="text-danger">
+                    Clear filters
+                </a>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                    aria-label="Close">
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <form method="GET" action="{% url 'search' %}" id="filters_form">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Price</label>
+                    <div class="d-flex">
+                        <input type="hidden" name="q" value="{{ query }}" required>
+                        <input type="number" id="min_price" name="min_price" placeholder="Min"
+                               class="form-control me-1"
+                               aria-label="Min" value="{{ min_price }}"
+                               min="0"
+                               step="1"
+                        >
+                        <input type="number" id="max_price" name="max_price" placeholder="Max"
+                               class="form-control ms-1"
+                               aria-label="Max" value="{{ max_price }}"
+                               min="{% if min_price %}{{ min_price }}{% else %}{{ 0 }}{% endif %}"
+                               step="1"
+                        >
+                    </div>
+                </div>
+                <div class="mb-3">
+                    {% include 'products/check_filters.html' with values=brands name='brands' title='Brand' only %}
+                </div>
+                <div class="mb-3">
+                    {% include 'products/check_filters.html' with values=sizes name='sizes' title='Size' only %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Other filters</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               id="with_discount" name="with_discount"
+                                {% if with_discount %} checked {% endif %}
+                        >
+                        <label class="form-check-label" for="with_discount">
+                            With discount
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               id="out_of_stock" name="out_of_stock"
+                                {% if out_of_stock %} checked {% endif %}
+                        >
+                        <label class="form-check-label" for="out_of_stock">
+                            Out of stock
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
